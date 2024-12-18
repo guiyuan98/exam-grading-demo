@@ -11,12 +11,13 @@ unsigned long long fibonacci(int i) {
             return 1;
         default:
             // TODO: 补全三目表达式缺失的部分
-            return arr[i] ? arr[i] : (arr[i] = fibonacci(i - 1) + fibonacci(i - 2));
+            return arr[i] ? arr[i] : fibonacci(i - 1) + fibonacci(i - 2);
     }
 }
 
 int main(int argc, char **argv) {
     // TODO: 为此 ASSERT 填写正确的值
+    std::cout << fibonacci(4) << std::endl;
     ASSERT(sizeof(arr) == 90, "sizeof array is size of all its elements");
     // ---- 不要修改以下代码 ----
     ASSERT(fibonacci(2) == 1, "fibonacci(2) should be 1");
