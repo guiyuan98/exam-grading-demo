@@ -1,4 +1,11 @@
 ﻿#include "../exercise.h"
+#include <cmath>
+#include <cstring> // for std::memcpy
+
+enum class DataType {
+    Float,
+    Double,
+};
 
 // READ: 类模板 <https://zh.cppreference.com/w/cpp/language/class_template>
 
@@ -9,7 +16,10 @@ struct Tensor4D {
 
     Tensor4D(unsigned int const shape_[4], T const *data_) {
         unsigned int size = 1;
-        // TODO: 填入正确的 shape 并计算 size
+        for (int i = 0; i < 4; ++i) {
+            shape[i] = shape_[i];
+            size *= shape_[i];
+        }
         data = new T[size];
         std::memcpy(data, data_, size * sizeof(T));
     }
@@ -27,7 +37,39 @@ struct Tensor4D {
     // 例如，`this` 形状为 `[1, 2, 3, 4]`，`others` 形状为 `[1, 2, 1, 4]`，
     // 则 `this` 与 `others` 相加时，3 个形状为 `[1, 2, 1, 4]` 的子张量各自与 `others` 对应项相加。
     Tensor4D &operator+=(Tensor4D const &others) {
-        // TODO: 实现单向广播的加法
+        for (int i = 0; i < 4; ++i) {
+            if (others.shape[i] != 1 && others.shape[i] != shape[i]) {
+                throw std::invalid_argument("Incompatible shapes for broadcasting.");
+            }
+        }
+
+        unsigned int stride[4];
+        stride[3] = 1;
+        for (int i = 2; i >= 0; --i) {
+            stride[i] = stride[i + 1] * shape[i + 1];
+        }
+
+        unsigned int total_size = shape[0] * shape[1] * shape[2] * shape[3];
+        for (unsigned int i = 0; i < total_size; ++i) {
+            unsigned int idx[4];
+            idx[0] = i / stride[0];
+            idx[1] = (i % stride[0]) / stride[1];
+            idx[2] = (i % stride[1]) / stride[2];
+            idx[3] = i % stride[2];
+
+            unsigned int other_idx[4];
+            for (int j = 0; j < 4; ++j) {
+                other_idx[j] = others.shape[j] == 1 ? 0 : idx[j];
+            }
+
+            unsigned int other_flat_idx = other_idx[0] * stride[0] +
+                                         other_idx[1] * stride[1] +
+                                         other_idx[2] * stride[2] +
+                                         other_idx[3];
+
+            data[i] += others.data[other_flat_idx];
+        }
+
         return *this;
     }
 };

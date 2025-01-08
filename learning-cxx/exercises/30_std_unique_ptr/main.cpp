@@ -1,4 +1,5 @@
 ﻿#include "../exercise.h"
+#include <cstring>
 #include <memory>
 #include <string>
 #include <vector>
@@ -56,7 +57,6 @@ int main(int argc, char **argv) {
 
     std::vector<const char *> answers[]{
         {"fd"},
-        // TODO: 分析 problems[1] 中资源的生命周期，将记录填入 `std::vector`
         {"rf", "rd"},
         {"", "", "", "", "", "", "", ""},
     };
