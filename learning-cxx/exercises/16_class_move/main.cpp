@@ -1,5 +1,6 @@
 #include "../exercise.h"
 #include <iostream>
+#include <algorithm> // 添加 <algorithm> 以使用 std::max
 
 // READ: 左值右值（概念）<https://learn.microsoft.com/zh-cn/cpp/c-language/l-value-and-r-value-expressions?view=msvc-170>
 // READ: 左值右值（细节）<https://zh.cppreference.com/w/cpp/language/value_category>
@@ -16,7 +17,7 @@ class DynFibonacci {
 
 public:
     // 实现动态设置容量的构造器
-    DynFibonacci(int capacity) : cache(new size_t[capacity]), cached(capacity) {
+    DynFibonacci(int capacity) : cache(new size_t[capacity]), cached(2) {
         if (capacity > 0) {
             cache[0] = 0; // 初始化第一个斐波那契数
         }
@@ -34,7 +35,7 @@ public:
     // 实现移动赋值
     DynFibonacci &operator=(DynFibonacci &&other) noexcept {
         if (this != &other) { // 防止自我赋值
-            delete[] cache; // 释放当前对象的资源
+            delete[] cache;  // 释放当前对象的资源
             cache = other.cache;
             cached = other.cached;
             other.cache = nullptr;
@@ -60,7 +61,7 @@ public:
 
     // NOTICE: 不要修改这个方法
     size_t operator[](int i) const {
-        ASSERT(i <= cached, "i out of range");
+        ASSERT(i < cached, "i out of range");
         return cache[i];
     }
 

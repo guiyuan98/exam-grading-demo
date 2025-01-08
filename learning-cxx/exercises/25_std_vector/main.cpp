@@ -10,7 +10,7 @@ int main(int argc, char **argv) {
         std::vector<int> vec{1, 2, 3, 4, 5};
         ASSERT(vec.size() == 5, "Fill in the correct value.");
         // THINK: `std::vector` 的大小是什么意思？与什么有关？
-        ASSERT(sizeof(vec) == 20, "Fill in the correct value.");
+        ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
         int ans[]{1, 2, 3, 4, 5};
         ASSERT(std::memcmp(vec.data(), ans, sizeof(ans)) == 0, "Fill in the correct values.");
     }
@@ -18,7 +18,7 @@ int main(int argc, char **argv) {
         std::vector<double> vec{1, 2, 3, 4, 5};
         {
             ASSERT(vec.size() == 5, "Fill in the correct value.");
-            ASSERT(sizeof(vec) == 20, "Fill in the correct value.");
+            ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
             double ans[]{1, 2, 3, 4, 5};
             ASSERT(std::memcmp(vec.data(), ans, sizeof(ans)) == 0, "Fill in the correct values.");
         }
@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
             ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
             vec.pop_back();
             ASSERT(vec.size() == 5, "Fill in the correct value.");
-            ASSERT(sizeof(vec) == 20, "Fill in the correct value.");
+            ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
         }
         {
             vec[4] = 6;
@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
         ASSERT(vec[0] == 'z', "Make this assertion pass.");
         ASSERT(vec[47] == 'z', "Make this assertion pass.");
         ASSERT(vec.size() == 48, "Make this assertion pass.");
-        ASSERT(sizeof(vec) == 48, "Fill in the correct value.");
+        ASSERT(sizeof(vec) == 24, "Fill in the correct value.");
         {
             auto capacity = vec.capacity();
             vec.resize(16);

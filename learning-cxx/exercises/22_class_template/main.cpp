@@ -1,6 +1,7 @@
 ﻿#include "../exercise.h"
 #include <cmath>
 #include <cstring> // for std::memcpy
+#include <stdexcept> // for std::invalid_argument
 
 enum class DataType {
     Float,
@@ -49,6 +50,12 @@ struct Tensor4D {
             stride[i] = stride[i + 1] * shape[i + 1];
         }
 
+        unsigned int other_stride[4];
+        other_stride[3] = 1;
+        for (int i = 2; i >= 0; --i) {
+            other_stride[i] = other_stride[i + 1] * others.shape[i + 1];
+        }
+
         unsigned int total_size = shape[0] * shape[1] * shape[2] * shape[3];
         for (unsigned int i = 0; i < total_size; ++i) {
             unsigned int idx[4];
@@ -62,10 +69,10 @@ struct Tensor4D {
                 other_idx[j] = others.shape[j] == 1 ? 0 : idx[j];
             }
 
-            unsigned int other_flat_idx = other_idx[0] * stride[0] +
-                                         other_idx[1] * stride[1] +
-                                         other_idx[2] * stride[2] +
-                                         other_idx[3];
+            unsigned int other_flat_idx = other_idx[0] * other_stride[0] +
+                                          other_idx[1] * other_stride[1] +
+                                          other_idx[2] * other_stride[2] +
+                                          other_idx[3];
 
             data[i] += others.data[other_flat_idx];
         }

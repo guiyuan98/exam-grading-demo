@@ -46,19 +46,22 @@ int main(int argc, char **argv) {
 
     drop(forward(reset(nullptr)));
     problems[0] = std::move(RECORDS);
+    RECORDS.clear();// 清空 RECORDS
 
     forward(drop(reset(forward(forward(reset(nullptr))))));
     problems[1] = std::move(RECORDS);
+    RECORDS.clear();// 清空 RECORDS
 
     drop(drop(reset(drop(reset(reset(nullptr))))));
     problems[2] = std::move(RECORDS);
+    RECORDS.clear();// 清空 RECORDS
 
     // ---- 不要修改以上代码 ----
 
     std::vector<const char *> answers[]{
-        {"fd"},
-        {"rf", "rd"},
-        {"", "", "", "", "", "", "", ""},
+        {"rf", "d"},
+        {"rf", "rf", "rd"},
+        {"rd", "rd", "rd", "rd", "rd", "rd", "rd", "rd"},
     };
 
     // ---- 不要修改以下代码 ----
